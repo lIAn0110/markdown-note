@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width= device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>sticky</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    .father{
+      width: 300px;
+      /* 父元素的高度超出一屏, 发生滚动时, 才能看到效果 */
+      height: 1700px;
+      background: deepskyblue;
+      /* 父元素设置了以下的 overflow 值, 无效 */
+      /* overflow: hidden; */
+      /* overflow: auto; */
+      /* overflow: scroll; */
+    }
+    .son{
+      position: sticky;
+      /* 不指定 top/left/bottom/right, 无效 */
+      top: 0px;
+      width: 200px;
+      height: 200px;
+      /* 子元素高度大于父元素的高度, 无效 */
+      /* height: 1800px; */
+      background: gold;
+    }
+  </style>
+</head>
+<body>
+  <div class="father">
+    我是 sticky 元素的父元素
+    <div class="son">
+      我是 sticky 的子元素
+    </div>
+  </div>
+</body>
+</html>
