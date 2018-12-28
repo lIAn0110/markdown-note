@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>图片的懒加载</title>
+  <style>
+    .photos img {
+      display: block;
+      min-width: 300px;
+      min-height: 200px;
+      border: solid #ccc 1px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="photos" class="photos"></div>
+
+
+  <script>
+    /** 
+      来自迅雷的图片
+      http://cued.xunlei.com/demos/publ/img/P_xxx.jpg
+      http://cued.xunlei.com/demos/publ/img/P_001.jpg
+    */
+
+    const baseUrl = 'http://cued.xunlei.com/demos/publ/img/P_';
+    const demoUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZkV7UxcVOKdOAOrQ9JaZJ_-LCvNJ5sVxaJuroeFf09jVCI1lq';
+    const photos = document.getElementById('photos');
+    // 动态创建 img
+    function createImg(count) {
+      var src = '';
+      for (var i = 1; i <= count; i++) {
+        // 每一次要重新初始化一个实例
+        var img = new Image();
+        img.src = demoUrl;
+        // padStart() 在字符串的开头填充字符串, 并截取指定位数
+        src = baseUrl + i.toString().padStart(3, '000') + '.jpg';
+        img.setAttribute('data-src', src);
+        // 设置一个 id, 方便获取元素
+        img.setAttribute('id', 'photo'+i);
+        // 将创建好的 img 元素, 追加到页面上
+        photos.appendChild(img);
+      }
+    }
+    createImg(30);
+
+    // 判断元素是否在视口内
+    function isInViewport(el) {
+      // 网页被卷去的高 (scrollTop)
+      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      // 浏览器内页面的可用高度, 浏览器的当前高度减去浏览器边框、工具条后的高度
+      var innerHeight = window.innerHeight;
+      // 获取元素距顶部的距离 (offsetTop)
+      var offsetTop = el.offsetTop;
+      // console.log(scrollTop)
+      // console.log(innerHeight)
+      // console.log(offsetTop)
+      if(scrollTop + innerHeight >= offsetTop) {
+        return true;
+      }
+      return false;
+    }
+    // 懒加载
+    function lazyLoad() {
+      // 获取所有的 img 标签
+      var imgArr = document.getElementsByTagName('img');
+      // 当前已经加载的 img 下标
+      var loadedIndex = 0;
+      // 遍历, 判断元素是否在视口内
+      for (var i = loadedIndex; i < imgArr.length; i++) {
+        if(isInViewport(imgArr[i])) {
+          imgArr[i].src = imgArr[i].dataset.src;
+          // 记录下已经加载过的 img, 之后就可以少做一些判断, 也算提升一点点性能吧
+          loadedIndex = i;
+        }
+      }
+    }
+    
+    // onload
+    window.onload = function() {
+      // onload 初始化时调用一次
+      // 如果初始化的时候不调用, 那么只会请求一张图片, 那就是我们滴 demo 图片
+      lazyLoad();
+      // 监听页面滚动, 再次调用
+      window.addEventListener('scroll', function() {
+        lazyLoad();
+      });
+    };
+  </script>
+</body>
+
+</html>

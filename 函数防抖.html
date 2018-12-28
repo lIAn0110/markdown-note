@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>函数防抖</title>
+</head>
+
+<body>
+  <script>
+    function debounce(fn, wait) {
+      // 定时器
+      var timer = null;
+      // 返回一个函数
+      return function () {
+        // 获取到当前的 this 对象
+        var context = this;
+        // console.log(context); // 当前是 window
+        // 函数的参数列表
+        var args = arguments;
+        // console.log(args);
+        // 函数内部引用了外部的变量, 形成闭包
+        if (timer) {
+          // 清除当前的计时器
+          clearTimeout(timer);
+          // 重新初始化
+          timer = null;
+        }
+        // 等待 wait 毫秒之后, 将该事件加入事件队列
+        timer = setTimeout(function () {
+          fn.apply(context, args);
+        }, wait);
+      }
+    }
+    var fn = function () {
+      console.log('函数防抖...');
+    };
+    // 等待 500ms, 每隔 1000ms 触发一次
+    setInterval(debounce(fn, 500), 1000);
+    // 等待 2000ms, 每隔 1000ms 触发一次 【永远都不会执行】
+    setInterval(debounce(fn, 2000), 1000);
+  </script>
+</body>
+
+</html>
