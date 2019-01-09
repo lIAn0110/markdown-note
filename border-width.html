@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>border-width三角形</title>
+  <style>
+    .trangle{
+      position: relative;
+      display: block;
+      width: 0;
+      height: 0;
+      border-width: 20px 20px 0px;
+      /* border-color:darkorange brown lawngreen; */
+      border-color: transparent;
+      border-top-color: #f00;
+      border-style: solid;
+    }
+    .trangle::after{
+      position: absolute;
+      content: "";
+      display: block;
+      top: -20px;
+      left: -20px;
+      width: 0;
+      height: 0;
+      border-width: 18px;
+      border-color: skyblue;
+      border-style: solid;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="trangle"></div>
+  </div>
+</body>
+</html>
